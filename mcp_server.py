@@ -65,11 +65,11 @@ def fetch_doc(doc_id: str) -> str:
 # prompt to rewrite a doc in markdown format
 @mcp.prompt(
     name="format",
-    description="Rewrites the contents of the document in Markdown format."
+    description="Rewrites the contents of the document in Markdown format.",
 )
 def format_document(
-    doc_id: str = Field(description="Id of the document to format")
-) -> list[base.Message]: 
+    doc_id: str = Field(description="Id of the document to format"),
+) -> list[base.Message]:
     prompt = f"""
     Your goal is to reformat a document to be written with markdown syntax.
 
@@ -78,13 +78,11 @@ def format_document(
     {doc_id}
     </document_id>
 
-    Add in headers, bullet points, tables, etc as necessary. Feel free to add in structure.
-    Use the 'edit_document' tool to edit the document. After the document has been reformatted...
+    Add in headers, bullet points, tables, etc as necessary. Feel free to add in extra text, but don't change the meaning of the report.
+    Use the 'edit_document' tool to edit the document. After the document has been edited, respond with the final version of the doc. Don't explain your changes.
     """
 
-    return [
-        base.UserMessage(prompt)
-    ]
+    return [base.UserMessage(prompt)]
     
 # TODO: Write a prompt to summarize a doc
 
