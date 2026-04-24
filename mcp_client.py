@@ -42,14 +42,18 @@ class MCPClient:
         return self._session
 
     async def list_tools(self) -> list[types.Tool]:
-        # TODO: Return a list of tools defined by the MCP server
-        return []
+        # Return a list of tools defined by the MCP server
+        # self.session() - connection to MCP server 
+        # list_tools() - build in fuction in the MCP sdk to get a list of all the available tools 
+        result = await self.session().list_tools()
+        return result.tools
 
     async def call_tool(
         self, tool_name: str, tool_input: dict
     ) -> types.CallToolResult | None:
-        # TODO: Call a particular tool and return the result
-        return None
+        # Call a particular tool and return the result
+        # tool_input - input parameters provided by CLAUDE 
+        return await self.session().call_tool(tool_name, tool_input)
 
     async def list_prompts(self) -> list[types.Prompt]:
         # TODO: Return a list of prompts defined by the MCP server
@@ -76,13 +80,15 @@ class MCPClient:
 
 
 # For testing
+# starts up a copy of our mcp server and gets a list of all the tools defined by it 
 async def main():
     async with MCPClient(
         # If using Python without UV, update command to 'python' and remove "run" from args.
         command="uv",
         args=["run", "mcp_server.py"],
     ) as _client:
-        pass
+        result = await _client.list_tools()
+        print(result)
 
 
 if __name__ == "__main__":
